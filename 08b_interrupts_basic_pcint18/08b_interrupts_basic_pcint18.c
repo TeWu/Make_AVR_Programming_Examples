@@ -17,7 +17,7 @@
 #define DELAYTIME 500
 
 
-void handleButton() {
+void handleButton(void) {
   if (bit_is_set(BUTTON_PIN, BUTTON))
     LEDS_PORT |= (1 << LED1);   // Turn on LED1
   else
@@ -28,14 +28,14 @@ ISR(PCINT2_vect) {  // Run every time logical state (voltage level) on button's 
   handleButton();
 }
 
-void initPCINT18() {
+void initPCINT18(void) {
   // EIMSK = Pin Change Interrupt Control Register (see "External Interrupts" -> "Register Description" section in datasheet for details)
   PCICR  |= (1 << PCIE2);    // Enable PCINT interrupt for port D
   // PCMSK2 = Pin Change Mask Register 2
   PCMSK2 |= (1 << PCINT18);  // Set mask to enable PCINT18 (PCINT on pin PD2)
 }
 
-int main() {
+int main(void) {
   LEDS_DDR    |= (1 << LED0) | (1 << LED1);  // Configure LEDs pins for output
   BUTTON_DDR  &= ~(1 << BUTTON);             // Configure button pin for input
   BUTTON_PORT |= (1 << BUTTON);              // Enable internal pull-up resistor on button pin

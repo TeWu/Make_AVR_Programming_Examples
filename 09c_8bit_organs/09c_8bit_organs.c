@@ -5,7 +5,7 @@
 #include "scale8.h"      // 8-bit scale
 
 
-static inline void initTimer0() {
+static inline void initTimer0(void) {
   TCCR0B |= (1 << CS00) | (1 << CS01);  // Set Timer0 clock prescaler to 64
   TCCR0A |= (1 << WGM01);               // Set Timer0 to CTC Mode
   TCCR0A |= (1 << COM0A0);              // Configure Timer0 to toggle pin OC0A (PD6) each cycle through
@@ -22,7 +22,7 @@ static inline void playNote(uint8_t period, uint16_t duration) {
   SPEAKER_DDR &= ~(1 << SPEAKER);  // Turn the speaker off
 }
 
-int main() {
+int main(void) {
   initTimer0();
 
   while (1) {

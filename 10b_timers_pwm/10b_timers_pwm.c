@@ -22,7 +22,7 @@
 #include "pin_config.h"
 
 
-static inline void initTimers() {
+static inline void initTimers(void) {
   // Timer 1 A,B
   TCCR1A |= (1 << WGM10);   // Fast PWM mode, 8-bit (part 1)
   TCCR1B |= (1 << WGM12);   // Fast PWM mode, 8-bit (part 2)
@@ -36,7 +36,7 @@ static inline void initTimers() {
   TCCR2A |= (1 << COM2A1);  // PWM output on pin OC2A (PB3)
 }
 
-int main() {
+int main(void) {
   uint8_t brightness;
 
   LEDS_DDR |= (1 << LED1) | (1 << LED2) | (1 << LED3);  // Set LED1, LED2 and LED3 pins to output mode

@@ -7,7 +7,7 @@
 #define TIMER1_TICKS_PER_MS (F_CPU / 8000)
 
 
-static inline void initTimer1() {
+static inline void initTimer1(void) {
   TCCR1B |= (1 << CS11);   // Set Timer1 clock prescaler to 8
   // CPU clock speed: 1 MHz     => 1000 ticks per ms
   // Timer1 clock prescaler: 8  => 125  ticks per ms
@@ -17,7 +17,7 @@ static inline void initTimer1() {
                                                      // Also be carefull to not exceed OCR1A max value of 2^16 = 65536
 }
 
-int main() {
+int main(void) {
   initTimer1();
 
   while(1) {

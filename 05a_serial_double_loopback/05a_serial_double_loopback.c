@@ -7,7 +7,7 @@
 #include "USART.h"
 
 
-int main() {
+int main(void) {
   char serialCharacter;
 
   LED_DDR = 0xFF;  // Set up LEDs for output

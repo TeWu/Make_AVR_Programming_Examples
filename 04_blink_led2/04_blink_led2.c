@@ -15,7 +15,8 @@
 #define DELAYTIME  1500
 
 
-int main() {
+// Use "int main(void) { ..." instead "int main() { ..." - see https://stackoverflow.com/a/693794/6231376
+int main(void) {
   // Init
   setBit(LED_DDR, LED); // Data Direction Register: writing a one to the bit enables output.
 

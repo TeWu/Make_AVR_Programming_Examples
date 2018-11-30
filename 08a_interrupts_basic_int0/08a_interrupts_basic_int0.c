@@ -8,7 +8,7 @@
 #define DELAYTIME 500
 
 
-void handleButton() {
+void handleButton(void) {
   if (bit_is_set(BUTTON_PIN, BUTTON))
     LEDS_PORT |= (1 << LED1);   // Turn on LED1
   else
@@ -19,14 +19,14 @@ ISR(INT0_vect) {  // Run every time logical state (voltage level) on button pin 
   handleButton();
 }
 
-void initINT0() {
+void initINT0(void) {
   // EIMSK = External Interrupt Mask Register (see "External Interrupts" -> "Register Description" section in datasheet for details)
   EIMSK |= (1 << INT0);   // Enable INT0 interrupt
   // EICRA = External Interrupt Control Register A
   EICRA |= (1 << ISC00);  // Configure INT0 to trigger on (INT0 = PD2) pin logical state (voltage level) change
 }
 
-int main() {
+int main(void) {
   LEDS_DDR    |= (1 << LED0) | (1 << LED1);  // Configure LEDs pins for output
   BUTTON_DDR  &= ~(1 << BUTTON);             // Configure button pin for input
   BUTTON_PORT |= (1 << BUTTON);              // Enable internal pull-up resistor on button pin

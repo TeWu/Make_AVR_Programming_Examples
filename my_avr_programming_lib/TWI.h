@@ -29,16 +29,16 @@
 // Sets pull-up resistors and initializes bus speed to 100kHz (assuming F_CPU = 8MHz)
 void TWI_init(uint8_t* port, uint8_t scl_bit, uint8_t sda_bit);
 // Waits until the hardware finishes its current job
-void TWI_wait();
+void TWI_wait(void);
 // Sends a start condition (sets TWSTA) and then the divice address with read/write bit set or cleared appropriately for read or write mode
 void TWI_start(uint8_t address, uint8_t mode);
 // Sends a stop condition (sets TWSTO)
-void TWI_stop();
+void TWI_stop(void);
 // Loads data, sends it out, waiting for completion
 void TWI_send(uint8_t data);
 // Read in from slave, sending ACK (sets TWEA bit) when done
-uint8_t TWI_readAndAck();
+uint8_t TWI_readAndAck(void);
 // Read in from slave, sending NACK (no TWEA bit) when done
-uint8_t TWI_readAndNack();
+uint8_t TWI_readAndNack(void);
 
 #endif /* _TWI_H_ */

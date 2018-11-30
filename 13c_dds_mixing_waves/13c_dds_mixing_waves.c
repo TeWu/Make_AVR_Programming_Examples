@@ -21,13 +21,13 @@
 #define OSCILLATOR_SHIFT 2
 
 
-static inline void initTimer0() {
+static inline void initTimer0(void) {
   TCCR0B |= (1 << CS00);                    // Set Timer0 clock prescaler to 1 - For sampled audio, we need all the speed we can get
   TCCR0A |= ((1 << WGM01) | (1 << WGM00));  // Fast PWM mode
   TCCR0A |= (1 << COM0A1);                  // Output PWM signal to pin OC0A (PD6)
 }
 
-int main() {
+int main(void) {
   uint16_t accumulators[OSCILLATORS_COUNT];
   uint8_t waveStep;
   int16_t mixer = 0;

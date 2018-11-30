@@ -15,7 +15,7 @@ uint8_t debounce(uint8_t pin, uint8_t bit) {
   return 0;
 }
 
-int main() {
+int main(void) {
   LED_DDR |= (1 << LED);         // Set up LED for output
   BUTTON_DDR &= ~(1 << BUTTON);  // Set up button for input
   BUTTON_PORT |= (1 << BUTTON);  // Enable the pull-up resistor on the button pin

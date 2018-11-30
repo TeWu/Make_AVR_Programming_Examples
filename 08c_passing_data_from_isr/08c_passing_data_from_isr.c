@@ -11,7 +11,7 @@
 
 volatile uint8_t delayTime;  // Use global volatile variables to pass data from/to ISR
 
-void setDelayTime() {
+void setDelayTime(void) {
   delayTime = bit_is_set(BUTTON_PIN, BUTTON) ? DELAYTIME_FAST : DELAYTIME_SLOW;
 }
 
@@ -19,14 +19,14 @@ ISR(PCINT2_vect) {  // Run every time logical state (voltage level) on button's 
   setDelayTime();
 }
 
-void initPCINT18() {
+void initPCINT18(void) {
   // EIMSK = Pin Change Interrupt Control Register (see "External Interrupts" -> "Register Description" section in datasheet for details)
   PCICR  |= (1 << PCIE2);    // Enable PCINT interrupt for port D
   // PCMSK2 = Pin Change Mask Register 2
   PCMSK2 |= (1 << PCINT18);  // Set mask to enable PCINT18 (PCINT on pin PD2)
 }
 
-int main() {
+int main(void) {
   LED_DDR     |= (1 << LED);      // Configure LED pin for output
   BUTTON_DDR  &= ~(1 << BUTTON);  // Configure button pin for input
   BUTTON_PORT |= (1 << BUTTON);   // Enable internal pull-up resistor on button pin

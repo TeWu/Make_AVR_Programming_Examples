@@ -7,7 +7,7 @@
 #define PWM_DELAY     (1000000 / (PWM_FREQUENCY * 255))  // microseconds
 
 
-int main() {
+int main(void) {
   uint8_t brightness = 0;
   int8_t  direction  = 1;
   uint8_t i;

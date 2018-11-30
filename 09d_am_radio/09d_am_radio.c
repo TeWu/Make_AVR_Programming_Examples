@@ -32,14 +32,14 @@
 #define COUNTER_VALUE 3  // determines carrier frequency
 
 
-static inline void initTimer0() {
+static inline void initTimer0(void) {
   TCCR0A |= (1 << WGM01);   // Set Timer0 to CTC mode
   TCCR0A |= (1 << COM0B0);  // Set Timer0 Compare Output Mode to toggle OC0A (PD6) pin each time through
   TCCR0B |= (1 << CS00);    // Set Timer0 clock prescaler to 1 = Timer0 clock at CPU frequency, ~8MHz
   OCR0A = COUNTER_VALUE;    // Set Timer0 Output Compare Register to achieve oscillation (toggling) at carrier frequency
 }
 
-static inline void initTimer1() {
+static inline void initTimer1(void) {
   TCCR1B |= (1 << WGM12);   // Set Timer1 to CTC mode
   TCCR1B |= (1 << CS11);    // Set Timer1 clock prescaler to 8
                             //   F_CPU / 8 = ~1MHz
@@ -61,7 +61,7 @@ static inline void transmitBeep(uint16_t pitch, uint16_t duration) {
   ANTENNA_DDR |= (1 << ANTENNA);  // Turn on full carrier
 }
 
-int main() {
+int main(void) {
   clock_prescale_set(clock_div_1);  // Set CPU clock to full 8MHz speed
   initTimer0();
   initTimer1();

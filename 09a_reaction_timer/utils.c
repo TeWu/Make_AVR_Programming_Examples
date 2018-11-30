@@ -51,7 +51,7 @@ void USART_printComment(uint16_t value) {
   else                   USART_printString("---->  Amazing!\r\n");
 }
 
-void randomDelay() {
+void randomDelay(void) {
   uint8_t randomTime;
   _delay_ms(1000); // Wait at least 1 sec
   randomTime = (uint8_t) TCNT1;  // Type-casting the 16-bit TCNT1 as an 8-bit number keeps only the 8 least-significant (fastest-changing) bits

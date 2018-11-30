@@ -40,13 +40,13 @@ static inline uint16_t lookupPitch(char c) {
   return C1; // Default value - if pressed some other key
 }
 
-static inline void initTimer0() {
+static inline void initTimer0(void) {
   TCCR0B |= (1 << CS00);                    // Set Timer0 clock prescaler to 1 - For sampled audio, we need all the speed we can get
   TCCR0A |= ((1 << WGM01) | (1 << WGM00));  // Fast PWM mode
   TCCR0A |= (1 << COM0A1);                  // Output PWM signal to pin OC0A (PD6)
 }
 
-int main() {
+int main(void) {
   uint8_t  volume = 0;
   uint16_t accumulator = 0;
   uint16_t accumulatorStep = C1;

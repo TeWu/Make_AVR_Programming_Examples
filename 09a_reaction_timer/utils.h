@@ -16,6 +16,6 @@ void USART_printComment(uint16_t value);
 
 // Waits for a "random" delay between 1 and 3.5 sec. Requires timer 1 initialized and running.
 // It's not really random, but very hard to control like coin-flipping.
-void randomDelay();
+void randomDelay(void);
 
 #endif /* _UTILS_H_ */

@@ -12,7 +12,7 @@
 #define BUFFER_SIZE 5
 
 
-int main() {
+int main(void) {
   uint8_t i;
   uint8_t buffer[BUFFER_SIZE];
 

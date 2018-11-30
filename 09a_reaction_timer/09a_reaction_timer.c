@@ -11,7 +11,7 @@
 #include "utils.h"
 
 
-static inline void initTimer1() {
+static inline void initTimer1(void) {
   // TCCR1B = Timer/Counter1 Control Register B
   TCCR1B |= (1 << CS10) | (1 << CS11);  // Configure Timer1:
   //                                         1) Set Timer1 clock prescaler to 64          (set bits CS10 and CS11)
@@ -21,7 +21,7 @@ static inline void initTimer1() {
   // No special output modes configured
 }
 
-int main() {
+int main(void) {
   LED_DDR     |= (1 << LED);      // Configure LED pin for output
   BUTTON_DDR  &= ~(1 << BUTTON);  // Configure button pin for input
   BUTTON_PORT |= (1 << BUTTON);   // Enable internal pull-up resistor on button pin

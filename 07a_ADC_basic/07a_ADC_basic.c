@@ -8,20 +8,20 @@
 #define THRESHOLD    512
 
 
-void initADC() {
+void initADC(void) {
   ADCSRA |= (1 << ADPS0) | (1 << ADPS1); // Set ADC clock prescaler to 1/8
   ADMUX  |= (1 << REFS0);        // Set ADC reference voltage to AVCC pin
   ADMUX   = (0xF0 & ADMUX) | 0;  // Set channel 0 as input to ADC (This is the default channel, but doesn't hurt to make sure)
   ADCSRA |= (1 << ADEN);         // Enable ADC
 }
 
-uint16_t readADC() {
+uint16_t readADC(void) {
   ADCSRA |= (1 << ADSC);                    // Set ADc Start Conversion bit
   loop_until_bit_is_clear(ADCSRA, ADSC);    // Wait for convertion to complete
   return ADC;                               // Read convertion result from ADC register
 }
 
-int main() {
+int main(void) {
   LED_DDR = 0xFF;
   USART_init();
   initADC();

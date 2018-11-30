@@ -4,7 +4,7 @@
 #include "pin_config.h"
 
 
-void initADC(){
+void initADC(void){
   ADCSRA |= (1 << ADPS0) | (1 << ADPS1); // Set ADC clock prescaler to 1/8
   ADMUX  |= (1 << REFS0);        // Set ADC reference voltage to AVCC pin
   ADCSRA |= (1 << ADEN);         // Enable ADC
@@ -17,7 +17,7 @@ uint16_t readADC(uint8_t channel){
   return ADC;                          // Return conversion result
 }
 
-int main(){
+int main(void){
   LED_DDR |= (1 << LED);  // Set LED as output
   initADC();
 

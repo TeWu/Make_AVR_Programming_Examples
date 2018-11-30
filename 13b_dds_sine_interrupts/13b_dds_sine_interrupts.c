@@ -11,7 +11,7 @@
 uint16_t accumulator = 0;
 uint16_t accumulatorStep = 880;  // ~440 Hz
 
-static inline void initTimer0() {
+static inline void initTimer0(void) {
   TCCR0B |= (1 << CS00);                    // Set Timer0 clock prescaler to 1 - For sampled audio, we need all the speed we can get
   TCCR0A |= ((1 << WGM01) | (1 << WGM00));  // Fast PWM mode
   TCCR0A |= (1 << COM0A1);                  // Output PWM signal to pin OC0A (PD6)
@@ -22,7 +22,7 @@ ISR(TIMER0_OVF_vect) {  // Run every time Timer0 overflows
   OCR0A = DDS_fullSine[accumulator >> 8] + 128;  // Set PWM duty cycle = voltage for speaker pin
 }
 
-int main() {
+int main(void) {
   clock_prescale_set(clock_div_1);  // Set CPU clock to full 8MHz speed
   BUTTON_DDR  &= ~(1 << BUTTON);    // Configure button pin as input
   BUTTON_PORT |= (1 << BUTTON);     // Enable pullup resistor on button pin

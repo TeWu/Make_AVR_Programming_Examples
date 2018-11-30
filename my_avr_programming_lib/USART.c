@@ -18,7 +18,7 @@
 #include "USART.h"
 
 
-void USART_init() {
+void USART_init(void) {
   // Set USART clock prescaler value based on values of BAUD and F_CPU macros - for more info see at the bottom of page 91 of "Make: AVR Programming" book, and https://www.nongnu.org/avr-libc/user-manual/setbaud_8h_source.html (line 58)
   UBRR0H = UBRRH_VALUE;
   UBRR0L = UBRRL_VALUE;
@@ -37,7 +37,7 @@ void USART_transmitByte(uint8_t data) {
   UDR0 = data;                          // Send data
 }
 
-uint8_t USART_receiveByte() {
+uint8_t USART_receiveByte(void) {
   loop_until_bit_is_set(UCSR0A, RXC0); // Wait for incoming data
   return UDR0;                         // Return register value
 }
@@ -96,7 +96,7 @@ void USART_printHexByte(uint8_t byte) {
   USART_transmitByte(integerToHexCharacter(byte & 0b00001111));
 }
 
-uint8_t USART_receiveNumberAsString() {
+uint8_t USART_receiveNumberAsString(void) {
   // Receive up to three ascii digits (number 0-255 as string) from the serial port, then convert from string to number.
   char hundreds = '0';
   char tens = '0';
