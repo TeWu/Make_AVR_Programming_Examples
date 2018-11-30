@@ -56,8 +56,11 @@ $(TARGET).elf: $(OBJECTS)
 %.hex: %.elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
 
+%.lst: %.elf
+	$(OBJDUMP) -S $< > $@
 
-.PHONY: all debug flash size erase clean serial_terminal
+
+.PHONY: all debug disassemble flash size erase clean serial_terminal
 
 all: $(TARGET).hex
 
@@ -66,6 +69,11 @@ debug:
 	@echo "Source files:"   $(SOURCES)
 	@echo "MCU, F_CPU, BAUD:"  $(MCU), $(F_CPU), $(BAUD)
 	@echo
+
+# Optionally create listing file from .elf
+# This creates approximate assembly-language equivalent of your code.
+# Useful for debugging time-sensitive bits, or making sure the compiler does what you want.
+disassemble: $(TARGET).lst
 
 flash: $(TARGET).hex
 	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -U flash:w:$<
