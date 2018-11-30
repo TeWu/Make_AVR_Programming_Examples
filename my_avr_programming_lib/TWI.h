@@ -27,7 +27,7 @@
 
 
 // Sets pull-up resistors and initializes bus speed to 100kHz (assuming F_CPU = 8MHz)
-void TWI_init(uint8_t* port, uint8_t scl_bit, uint8_t sda_bit);
+void TWI_init(volatile uint8_t* port, uint8_t scl_bit, uint8_t sda_bit);
 // Waits until the hardware finishes its current job
 void TWI_wait(void);
 // Sends a start condition (sets TWSTA) and then the divice address with read/write bit set or cleared appropriately for read or write mode

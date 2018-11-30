@@ -17,8 +17,8 @@
 // }
 
 // Call it like this: "TWI_init(&TWI_SCL_PORT, TWI_SCL, TWI_SDA);"
-void TWI_init(uint8_t* port, uint8_t scl_bit, uint8_t sda_bit) {
-  port |= ((1 << scl_bit) | (1 << sda_bit));  // Set pull-up resistors for SDA and SCL pins
+void TWI_init(volatile uint8_t* port, uint8_t scl_bit, uint8_t sda_bit) {
+  *port |= ((1 << scl_bit) | (1 << sda_bit));  // Set pull-up resistors for SDA and SCL pins
   TWBR = TWI_BITRATE;   // Set TWBR (TWI Bit Rate Register), so that we get requested TWI_SCL_FREQUENCY
   TWCR |= (1 << TWEN);  // Enable TWI
 }
