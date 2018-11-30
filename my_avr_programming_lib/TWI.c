@@ -1,21 +1,6 @@
 #include "TWI.h"
 
 
-// NOT USING THIS BECAUSE: see comment about TWI_BITRATE_UNPRESCALED in TWI.h
-// uint8_t TWI_SCLPrescaler(void) {
-//     // Calculate TWI SCL Prescaler value - for more info see datasheet description of TWPS (TWI Prescaler Bits) in TWSR register
-//   switch (TWSR & 0b00000011) {
-//     case 0: return 1;
-//     case 1: return 4;
-//     case 2: return 16;
-//   }
-//   return 64;
-// }
-//
-// uint8_t TWI_bitRate(void) {
-//   return TWI_BITRATE_UNPRESCALED / (uint32_t) TWI_SCLPrescaler();
-// }
-
 // Call it like this: "TWI_init(&TWI_SCL_PORT, TWI_SCL, TWI_SDA);"
 void TWI_init(volatile uint8_t* port, uint8_t scl_bit, uint8_t sda_bit) {
   *port |= ((1 << scl_bit) | (1 << sda_bit));  // Set pull-up resistors for SDA and SCL pins
