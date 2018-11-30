@@ -2,6 +2,7 @@
 #include <avr/io.h>      // Defines pins, ports, etc
 #include <util/delay.h>  // Functions to waste time
 #include <avr/power.h>   // Power Reduction Management
+#include <string.h>      // 'memset' function
 #include "USART.h"
 #include "TWI.h"
 #include "pin_config.h"
