@@ -2,10 +2,11 @@
 
 
 // Call it like this: "TWI_init(&TWI_SCL_PORT, TWI_SCL, TWI_SDA);"
+// How do I pass an IO port as a parameter to a function? https://www.microchip.com/webdoc/AVRLibcReferenceManual/FAQ_1faq_port_pass.html
 void TWI_init(volatile uint8_t* port, uint8_t scl_bit, uint8_t sda_bit) {
   *port |= ((1 << scl_bit) | (1 << sda_bit));  // Set pull-up resistors for SDA and SCL pins
-  TWBR = TWI_BITRATE;   // Set TWBR (TWI Bit Rate Register), so that we get requested TWI_SCL_FREQUENCY
-  TWCR |= (1 << TWEN);  // Enable TWI
+  TWBR  = TWI_BITRATE;   // Set TWBR (TWI Bit Rate Register), so that we get requested TWI_SCL_FREQUENCY
+  TWCR  |= (1 << TWEN);  // Enable TWI
 }
 
 void TWI_wait(void) {
