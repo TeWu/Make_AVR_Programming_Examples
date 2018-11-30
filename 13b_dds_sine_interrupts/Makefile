@@ -4,7 +4,7 @@
 ##########------------------------------------------------------##########
 
 MCU   = atmega328p
-F_CPU = 1000000UL
+F_CPU = 8000000UL
 BAUD  = 9600UL
 PROGRAMMER_TYPE = usbasp
 PROGRAMMER_ARGS =
