@@ -1,27 +1,35 @@
 #include "SPI.h"
 
 
-void SPI_init(uint8_t ssBit,   volatile uint8_t* ssDDR,   volatile uint8_t* ssPort,
-              uint8_t mosiBit, volatile uint8_t* mosiDDR,
-              uint8_t misoBit, volatile uint8_t* misoDDR, volatile uint8_t* misoPort,
-              uint8_t sckBit,  volatile uint8_t* sckDDR)  {
-  // SS pin configuration
-  *ssDDR  |= (1 << ssBit);  // Configure SS pin as output
-  *ssPort |= (1 << ssBit);  // Start off not selected (high)
-  // MOSI pin configuration
-  *mosiDDR |= (1 << mosiBit);  // Configure MOSI pin as output
-  // MISO pin configuration
-  *misoDDR  &= ~(1 << misoBit);  // Configure MISO pin as input
-  *misoPort |=  (1 << misoBit);  // Enable pull-up resistor on MISO pin
-  // SCK pin configuration
-  *sckDDR |= (1 << sckBit);  // Configure SCK pin as output
+void SPI_init(uint8_t isMaster)  {
+  if (isMaster) {
+    if (is_bit_clear(SPI_SS_DDR, SPI_SS))  // If SS (Slave Select) pin configured as input...
+      SPI_SS_PORT |=  (1 << SPI_SS);         // ... Enable pull-up resistor on SS pin
+    SPI_MOSI_DDR  |=  (1 << SPI_MOSI);  // Configure MOSI (Master Out Slave In) pin as output
+    SPI_MISO_DDR  &= ~(1 << SPI_MISO);  // Configure MISO (Master In Slave Out) pin as input
+    SPI_MISO_PORT |=  (1 << SPI_MISO);  // Enable pull-up resistor on MISO pin
+    SPI_SCK_DDR   |=  (1 << SPI_SCK);   // Configure SCK (Serial cloCK) pin as output
+    SPCR |= (1 << MSTR);                // Set SPI Master mode
+  } else {
+    SPI_SS_DDR    &= ~(1 << SPI_SS);    // Configure SS (Slave Select) pin as input
+    SPI_SS_PORT   |=  (1 << SPI_SS);    // Enable pull-up resistor on SS pin
+    SPI_MOSI_DDR  &= ~(1 << SPI_MOSI);  // Configure MOSI (Master Out Slave In) pin as input
+    SPI_MOSI_PORT |=  (1 << SPI_MOSI);  // Enable pull-up resistor on MOSI pin
+    SPI_MISO_DDR  |=  (1 << SPI_MISO);  // Configure MISO (Master In Slave Out) pin as output
+    SPI_SCK_DDR   &= ~(1 << SPI_SCK);   // Configure SCK (Serial cloCK) pin as input
+    SPI_SCK_PORT  |=  (1 << SPI_SCK);   // Enable pull-up resistor on SCK pin (to avoid High-Z state when SPI master device is in reset)
+    SPCR &= ~(1 << MSTR);               // Set SPI Slave mode
+  }
 
-  // AVR's hardware SPI peripheral configuration
   // SPCR = SPi Control Register
   SPCR |= (1 << SPR1);  // Set SPI clock prescaler to 16 (safer for breadboards)
                         // Not setting clock phase and polarity
-  SPCR |= (1 << MSTR);  // Set SPI Master mode
   SPCR |= (1 << SPE);   // Enable SPI
+}
+
+void SPI_init_slave(volatile uint8_t* slave_SS_DDR, volatile uint8_t* slave_SS_PORT, uint8_t slave_SS_bit) {
+  slave_SS_DDR  |= (1 << slave_SS_bit);  // Configure pin connected to slave's SS (Slave Select) pin as output
+  slave_SS_PORT |= (1 << slave_SS_bit);  // Start off not selected (high)
 }
 
 void SPI_tradeByte(uint8_t byte) {
