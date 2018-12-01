@@ -3,14 +3,21 @@
 
 #include <avr/io.h>
 
+//
+// TWI_init requires following macros to be defined:
+//   TWI_SDA_DDR, TWI_SDA_PORT, TWI_SDA,
+//   TWI_SCL_DDR, TWI_SCL_PORT, TWI_SCL
+//
+
 #define TWI_BITRATE 32  // Should give us TWI clock frequency of 100kHz at F_CPU = 8MHz
+                        // For more info see datasheet chapter "2-wire Serial Interface" -> "Bit Rate Generator Unit"
 
 #define TWI_WRITE_MODE 0
 #define TWI_READ_MODE  1
 
 
 // Sets pull-up resistors and initializes bus speed to 100kHz (assuming F_CPU = 8MHz)
-void TWI_init(volatile uint8_t* port, uint8_t scl_bit, uint8_t sda_bit);
+void TWI_init(void);
 // Waits until the hardware finishes its current job
 void TWI_wait(void);
 // Sends a start condition (sets TWSTA) and then the divice address with read/write bit set or cleared appropriately for read or write mode

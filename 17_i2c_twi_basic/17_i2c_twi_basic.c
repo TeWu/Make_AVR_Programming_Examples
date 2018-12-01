@@ -19,7 +19,7 @@ int main(void) {
 
   clock_prescale_set(clock_div_1);  // Set CPU clock to full 8MHz speed
   USART_init();
-  TWI_init(&TWI_SCL_PORT, TWI_SCL, TWI_SDA);
+  TWI_init();
 
   while(1) {
     // Send message over TWI
