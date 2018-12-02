@@ -22,7 +22,7 @@ int main(void) {
   clock_prescale_set(clock_div_1);  // Set CPU clock to full 8MHz speed
   USART_init();
   SPI_init_slave(&SPI_SLAVE_DDR, &SPI_SLAVE_PORT, SPI_SLAVE);
-  SPI_init(SPI_MASTER_MODE);
+  SPI_init(SPI_MASTER_MODE, SPI_F_SCK_64, SPI_MSB_FIRST, SPI_MODE_NOPOL_NOPHA);
 
   while(1) {
     SPI_SLAVE_SELECT;

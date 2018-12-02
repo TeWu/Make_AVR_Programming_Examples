@@ -1,7 +1,11 @@
 #include "SPI.h"
 
 
-void SPI_init(uint8_t isMaster)  {
+void SPI_init(uint8_t isMaster, uint8_t clockRateSelector, uint8_t lsbFirst, uint8_t mode)  {
+  uint8_t clockRate = (clockRateSelector >> 1);
+  uint8_t dblClock = (clockRateSelector & 1);
+
+  // Configure SPI pins
   if (isMaster) {
     if (bit_is_clear(SPI_DDR, SPI_SS))  // If SS (Slave Select) pin configured as input...
       SPI_PORT |= (1 << SPI_SS);          // ... Enable pull-up resistor on SS pin
@@ -9,7 +13,6 @@ void SPI_init(uint8_t isMaster)  {
     SPI_DDR  &= ~(1 << SPI_MISO);  // Configure MISO (Master In Slave Out) pin as input
     SPI_PORT |=  (1 << SPI_MISO);  // Enable pull-up resistor on MISO pin
     SPI_DDR  |=  (1 << SPI_SCK);   // Configure SCK (Serial cloCK) pin as output
-    SPCR |= (1 << MSTR);           // Set SPI Master mode
   } else {
     SPI_DDR  &= ~(1 << SPI_SS);    // Configure SS (Slave Select) pin as input
     SPI_PORT |=  (1 << SPI_SS);    // Enable pull-up resistor on SS pin
@@ -18,13 +21,18 @@ void SPI_init(uint8_t isMaster)  {
     SPI_DDR  |=  (1 << SPI_MISO);  // Configure MISO (Master In Slave Out) pin as output
     SPI_DDR  &= ~(1 << SPI_SCK);   // Configure SCK (Serial cloCK) pin as input
     SPI_PORT |=  (1 << SPI_SCK);   // Enable pull-up resistor on SCK pin (to avoid High-Z state when SPI master device is in reset)
-    SPCR &= ~(1 << MSTR);          // Set SPI Slave mode
   }
 
-  // SPCR = SPi Control Register
-  SPCR |= (1 << SPR1);  // Set SPI clock prescaler to 16 (safer for breadboards)
-                        // Not setting clock phase and polarity
-  SPCR |= (1 << SPE);   // Enable SPI
+  // Configure SPI hardware peripheral
+  // SPSR = SPI Status Register, SPCR = SPi Control Register
+  SPSR = ((dblClock & __SPI_DBLCLOCK_MASK) << SPI2X);  // Set Double SPI Speed Bit if requested
+  SPCR |= (
+            ((isMaster & __SPI_MASTER_MASK) << MSTR) |      // Set SPI Master/Slave mode
+            ((clockRate & __SPI_CLOCKRATE_MASK) << SPR0) |  // Set SCK frequency
+            ((lsbFirst & __SPI_LSBFIRST_MASK) << DORD) |    // Set LSB/MSB data ordering
+            ((mode & __SPI_MODE_MASK) << CPHA) |            // Set data mode - clock phase (CPHA) and polarity (CPOL)
+            (1 << SPE)                                      // Enable SPI
+          );
 }
 
 void SPI_init_slave(volatile uint8_t* slave_SS_DDR, volatile uint8_t* slave_SS_PORT, uint8_t slave_SS_bit) {
