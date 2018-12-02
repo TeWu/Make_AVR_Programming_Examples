@@ -2,12 +2,7 @@
 #define _TWI_H_ 1
 
 #include <avr/io.h>
-
-//
-// TWI_init requires following macros to be defined:
-//   TWI_SDA_DDR, TWI_SDA_PORT, TWI_SDA,
-//   TWI_SCL_DDR, TWI_SCL_PORT, TWI_SCL
-//
+#include "pins.h"
 
 #define TWI_BITRATE 32  // Should give us TWI clock frequency of 100kHz at F_CPU = 8MHz
                         // For more info see datasheet chapter "2-wire Serial Interface" -> "Bit Rate Generator Unit"

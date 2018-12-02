@@ -2,12 +2,10 @@
 
 
 void TWI_init(void) {
-  TWI_SDA_DDR  &= ~(1 << TWI_SDA);  // Configure SDA pin as input
-  TWI_SDA_PORT |=  (1 << TWI_SDA);  // Enable pull-up resistor for SDA pin
-  TWI_SCL_DDR  &= ~(1 << TWI_SCL);  // Configure SCL pin as input
-  TWI_SCL_PORT |=  (1 << TWI_SCL);  // Enable pull-up resistor for SCL pin
-  TWBR  = TWI_BITRATE;   // Set TWBR (TWI Bit Rate Register)
-  TWCR  |= (1 << TWEN);  // Enable TWI
+  TWI_DDR  &= ~( (1 << TWI_SDA) | (1 << TWI_SCL) );  // Configure SDA and SCL pins as input
+  TWI_PORT |=  ( (1 << TWI_SDA) | (1 << TWI_SCL) );  // Enable pull-up resistors for SDA and SCL pins
+  TWBR = TWI_BITRATE;   // Set TWBR (TWI Bit Rate Register)
+  TWCR |= (1 << TWEN);  // Enable TWI
 }
 
 void TWI_wait(void) {

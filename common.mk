@@ -3,11 +3,11 @@
 ##########              Config                                  ##########
 ##########------------------------------------------------------##########
 
-MCU   = atmega328p
-F_CPU = 1000000UL
-BAUD  = 9600UL
-PROGRAMMER_TYPE = usbasp
-PROGRAMMER_ARGS =
+MCU   ?= atmega328p
+F_CPU ?= 1000000UL   # 1MHz
+BAUD  ?= 9600UL
+PROGRAMMER_TYPE ?= usbasp
+PROGRAMMER_ARGS ?=
 
 ##########------------------------------------------------------##########
 
@@ -27,14 +27,16 @@ AVRDUDE = avrdude
 ## Name it automatically after the enclosing directory
 TARGET = $(lastword $(subst /, ,$(CURDIR)))
 
-LIBDIR = ../book_avr_programming_lib
+LIB_ROOTDIR ?= ../my_avr_programming_lib
+LIB_SUBDIRS ?=
+LIBDIRS     ?= $(foreach dir,$(LIB_SUBDIRS),$(LIB_ROOTDIR)/$(dir))
 
-SOURCES=$(wildcard *.c $(LIBDIR)/*.c)
+SOURCES=$(wildcard *.c $(foreach dir,$(LIBDIRS),$(wildcard $(dir)/*.c)))
 OBJECTS=$(SOURCES:.c=.o)
 HEADERS=$(SOURCES:.c=.h)
 
 ## Compilation options, type man avr-gcc if you're curious.
-CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. -I$(LIBDIR)
+CPPFLAGS = -DF_CPU=$(F_CPU) -DBAUD=$(BAUD) -I. $(foreach dir,$(LIBDIRS),-I$(dir))
 CFLAGS = -Os -g -std=gnu99 -Wall
 ## Use short (8-bit) data types
 CFLAGS += -funsigned-char -funsigned-bitfields -fpack-struct -fshort-enums
@@ -66,8 +68,9 @@ all: $(TARGET).hex
 
 debug:
 	@echo
-	@echo "Source files:"   $(SOURCES)
-	@echo "MCU, F_CPU, BAUD:"  $(MCU), $(F_CPU), $(BAUD)
+	@echo "Source files:"  $(SOURCES)
+	@echo "LIBDIRS:"  $(LIBDIRS)
+	@echo "MCU:" $(MCU) "F_CPU:" $(F_CPU) "BAUD:" $(BAUD)
 	@echo
 
 # Optionally create listing file from .elf
@@ -87,9 +90,8 @@ erase:
 	$(AVRDUDE) -c $(PROGRAMMER_TYPE) -p $(MCU) $(PROGRAMMER_ARGS) -e
 
 clean:
-	rm -f $(TARGET).elf $(TARGET).hex $(TARGET).obj \
-	$(TARGET).o $(TARGET).d $(TARGET).eep $(TARGET).lst \
-	$(TARGET).lss $(TARGET).sym $(TARGET).map $(TARGET)~ $(TARGET).eeprom
+	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst \
+	      *.sym *.map $(TARGET).eeprom
 
 serial_terminal:
 	sudo screen /dev/ttyUSB0 9600

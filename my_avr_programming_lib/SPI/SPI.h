@@ -2,14 +2,7 @@
 #define _SPI_H_ 1
 
 #include <avr/io.h>
-
-//
-// SPI_init requires following macros to be defined:
-//   SPI_SS_DDR,   SPI_SS_PORT,   SPI_SS,
-//   SPI_MOSI_DDR, SPI_MOSI_PORT, SPI_MOSI,
-//   SPI_MISO_DDR, SPI_MISO_PORT, SPI_MISO,
-//   SPI_SCK_DDR,  SPI_SCK_PORT,  SPI_SCK
-//
+#include "pins.h"
 
 #define SPI_SLAVE_MODE  0
 #define SPI_MASTER_MODE 1
