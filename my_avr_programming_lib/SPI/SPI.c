@@ -3,7 +3,7 @@
 
 void SPI_init(uint8_t isMaster)  {
   if (isMaster) {
-    if (is_bit_clear(SPI_DDR, SPI_SS))  // If SS (Slave Select) pin configured as input...
+    if (bit_is_clear(SPI_DDR, SPI_SS))  // If SS (Slave Select) pin configured as input...
       SPI_PORT |= (1 << SPI_SS);          // ... Enable pull-up resistor on SS pin
     SPI_DDR  |=  (1 << SPI_MOSI);  // Configure MOSI (Master Out Slave In) pin as output
     SPI_DDR  &= ~(1 << SPI_MISO);  // Configure MISO (Master In Slave Out) pin as input
@@ -28,8 +28,8 @@ void SPI_init(uint8_t isMaster)  {
 }
 
 void SPI_init_slave(volatile uint8_t* slave_SS_DDR, volatile uint8_t* slave_SS_PORT, uint8_t slave_SS_bit) {
-  slave_SS_DDR  |= (1 << slave_SS_bit);  // Configure pin connected to slave's SS (Slave Select) pin as output
-  slave_SS_PORT |= (1 << slave_SS_bit);  // Start off not selected (high)
+  *slave_SS_DDR  |= (1 << slave_SS_bit);  // Configure pin connected to slave's SS (Slave Select) pin as output
+  *slave_SS_PORT |= (1 << slave_SS_bit);  // Start off not selected (high)
 }
 
 void SPI_tradeByte(uint8_t byte) {
