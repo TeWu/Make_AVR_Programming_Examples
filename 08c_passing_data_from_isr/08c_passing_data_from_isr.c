@@ -9,10 +9,10 @@
 #define DELAY_TIME_FAST 400
 
 
-volatile uint8_t delayTime;  // Use global volatile variables to pass data from/to ISR
+volatile uint8_t delayTime = DELAY_TIME_SLOW;  // Use global volatile variables to pass data from/to ISR
 
 void setDelayTime(void) {
-  delayTime = bit_is_set(BUTTON_PIN, BUTTON) ? DELAY_TIME_FAST : DELAY_TIME_SLOW;
+  delayTime = bit_is_clear(BUTTON_PIN, BUTTON) ? DELAY_TIME_FAST : DELAY_TIME_SLOW;
 }
 
 ISR(PCINT2_vect) {  // Run every time logical state (voltage level) on button's **PORT** changes (for any pin on that port, that has PCINT enabled - in our case only pin PD2)
