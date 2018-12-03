@@ -23,9 +23,10 @@ int main(void) {
   uint8_t isButtonPressed = 0;
   while (1) {
     if(debounce(BUTTON_PIN, BUTTON)) {
-      if (isButtonPressed)
+      if (!isButtonPressed) {
         LED_PORT ^= (1 << LED);  // Toggle LED
-      isButtonPressed = 1;
+        isButtonPressed = 1;
+      }
     } else
       isButtonPressed = 0;
   }
