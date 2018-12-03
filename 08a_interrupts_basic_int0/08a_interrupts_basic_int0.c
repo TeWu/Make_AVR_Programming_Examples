@@ -5,11 +5,11 @@
 #include <avr/interrupt.h>  // "ISR" macro, and more
 #include "pin_config.h"
 
-#define DELAY_TIME 500
+#define DELAY_TIME 1500
 
 
 void handleButton(void) {
-  if (bit_is_set(BUTTON_PIN, BUTTON))
+  if (bit_is_clear(BUTTON_PIN, BUTTON))
     LEDS_PORT |= (1 << LED1);   // Turn on LED1
   else
     LEDS_PORT &= ~(1 << LED1);  // Turn off LED1
