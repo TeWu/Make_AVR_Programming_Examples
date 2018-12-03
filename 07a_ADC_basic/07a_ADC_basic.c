@@ -9,7 +9,7 @@
 
 
 void initADC(void) {
-  ADCSRA |= (1 << ADPS0) | (1 << ADPS1); // Set ADC clock prescaler to 1/8
+  ADCSRA |= (1 << ADPS0) | (1 << ADPS1); // Set ADC clock prescaler to 8
   ADMUX  |= (1 << REFS0);        // Set ADC reference voltage to AVCC pin
   ADMUX   = (0xF0 & ADMUX) | 0;  // Set channel 0 as input to ADC (This is the default channel, but doesn't hurt to make sure)
   ADCSRA |= (1 << ADEN);         // Enable ADC
