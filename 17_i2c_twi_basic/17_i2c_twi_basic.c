@@ -24,10 +24,10 @@ int main(void) {
 
   while(1) {
     // Send message over TWI
-    TWI_start(TWI_PEER_ADDRESS, TWI_WRITE_MODE);  // Start connection in write mode
+    TWI_start(TWI_PEER_ADDRESS + TWI_WRITE_MODE);  // Start connection in write mode
     TWI_send(TWI_PEER_MESSAGE);
     // Receive data over TWI
-    TWI_start(TWI_PEER_ADDRESS, TWI_READ_MODE);   // To restart in read mode, just call TWI_start again
+    TWI_start(TWI_PEER_ADDRESS + TWI_READ_MODE);   // To restart in read mode, just call TWI_start again
     for (i = 0; i < BUFFER_SIZE - 2; i++)
       buffer[i] = TWI_readAndAck();
     buffer[i] = TWI_readAndNack(); // Last byte received in connection should be with NACK - but why??

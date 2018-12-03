@@ -15,8 +15,10 @@
 void TWI_init(void);
 // Waits until the hardware finishes its current job
 void TWI_wait(void);
-// Sends a start condition (sets TWSTA) and then the divice address with read/write bit set or cleared appropriately for read or write mode
-void TWI_start(uint8_t address, uint8_t mode);
+// Sends a start condition (sets TWSTA) and then the divice address with write/read bit set or cleared appropriately for read or write mode.
+// Add TWI_WRITE_MODE or TWI_READ_MODE to adress to select write/read mode.
+// EXAMPLE: TWI_start(someAdress + TWI_WRITE_MODE)
+void TWI_start(uint8_t addressAndMode);
 // Sends a stop condition (sets TWSTO)
 void TWI_stop(void);
 // Loads data, sends it out, waiting for completion
@@ -25,5 +27,7 @@ void TWI_send(uint8_t data);
 uint8_t TWI_readAndAck(void);
 // Read in from slave, sending NACK (no TWEA bit) when done
 uint8_t TWI_readAndNack(void);
+
+#define TWI_read(ack) (ack ? TWI_readAndAck() : TWI_readAndNack())
 
 #endif /* _TWI_H_ */

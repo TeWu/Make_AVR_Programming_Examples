@@ -14,13 +14,10 @@ void TWI_wait(void) {
   loop_until_bit_is_set(TWCR, TWINT);
 }
 
-void TWI_start(uint8_t address, uint8_t mode) {
+void TWI_start(uint8_t addressAndMode) {
   TWCR = ((1 << TWEN) | (1 << TWINT) | (1 << TWSTA));
   TWI_wait();
-  if (mode == TWI_WRITE_MODE)  // 8th address bit is read/write mode selector bit = Clear it for write mode or set it for read mode
-    TWI_send(address & (~1));
-  else
-    TWI_send(address | 1);
+  TWI_send(addressAndMode);
 }
 
 void TWI_stop(void) {
