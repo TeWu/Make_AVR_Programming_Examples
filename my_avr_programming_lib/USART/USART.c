@@ -22,11 +22,11 @@ void USART_init(void) {
   // Set USART clock prescaler value based on values of BAUD and F_CPU macros - for more info see at the bottom of page 91 of "Make: AVR Programming" book, and https://www.nongnu.org/avr-libc/user-manual/setbaud_8h_source.html (line 58)
   UBRR0H = UBRRH_VALUE;
   UBRR0L = UBRRL_VALUE;
-  #if USE_2X
+# if USE_2X
     UCSR0A |= (1 << U2X0);
-  #else
+# else
     UCSR0A &= ~(1 << U2X0);
-  #endif
+# endif
   // UCSR0B = USART Control and Status Register 0 B
   UCSR0B = (1 << TXEN0) | (1 << RXEN0);    // Enable USART transmitter and receiver
   UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);  // Set frame format: 8 data bits and 1 stop bit
