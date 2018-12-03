@@ -9,7 +9,7 @@
 
 #define SPI_SLAVE_MESSAGE 0b10101100  // 172
 #define BUFFER_SIZE 5
-#define DELAYTIME   5000
+#define DELAY_TIME  5000
 
 #define SPI_SLAVE_SELECT    (SPI_SLAVE_PORT &= ~(1 << SPI_SLAVE))
 #define SPI_SLAVE_DESELECT  (SPI_SLAVE_PORT |=  (1 << SPI_SLAVE))
@@ -41,7 +41,7 @@ int main(void) {
 
     // Clear buffer and wait
     memset(buffer, 0, BUFFER_SIZE);
-    _delay_ms(DELAYTIME);
+    _delay_ms(DELAY_TIME);
   }
 
   return 0;

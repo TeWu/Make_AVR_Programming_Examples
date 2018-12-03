@@ -12,20 +12,20 @@
 #define LED_DDR    DDRB
 #define LED_PORT   PORTB
 #define LED        PB0    // Use PB0 macro instead of integer 0 to make the code more portable across microcontrollers.
-#define DELAYTIME  1500
+#define DELAY_TIME 1500
 
 
 // Use "int main(void) { ..." instead "int main() { ..." - see https://stackoverflow.com/a/693794/6231376
 int main(void) {
   // Init
-  setBit(LED_DDR, LED); // Data Direction Register: writing a one to the bit enables output.
+  setBit(LED_DDR, LED);  // Data Direction Register: writing a one to the bit enables output.
 
 
   // Main loop
   while(1) {
     toggleBit(LED_PORT, LED);  // Toggle LED's bit/pin
-    _delay_ms(DELAYTIME);      // Wait
+    _delay_ms(DELAY_TIME);     // Wait
   }
 
-  return 0; // Dead code - only exists to prevent compiler warning about main not returning an int
+  return 0;  // Dead code - only exists to prevent compiler warning about main not returning an int
 }

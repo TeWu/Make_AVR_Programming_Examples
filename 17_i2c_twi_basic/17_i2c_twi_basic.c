@@ -11,7 +11,7 @@
 #define TWI_PEER_MESSAGE 0b10101100  // 172
 
 #define BUFFER_SIZE 5
-#define DELAYTIME   5000
+#define DELAY_TIME  5000
 
 
 int main(void) {
@@ -39,7 +39,7 @@ int main(void) {
 
     // Clear buffer and wait
     memset(buffer, 0, BUFFER_SIZE);
-    _delay_ms(DELAYTIME);
+    _delay_ms(DELAY_TIME);
   }
 
   return 0;

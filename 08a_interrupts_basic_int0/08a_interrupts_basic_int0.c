@@ -5,7 +5,7 @@
 #include <avr/interrupt.h>  // "ISR" macro, and more
 #include "pin_config.h"
 
-#define DELAYTIME 500
+#define DELAY_TIME 500
 
 
 void handleButton(void) {
@@ -35,7 +35,7 @@ int main(void) {
 
   while(1) {
     LEDS_PORT ^= (1 << LED0);  // Toggle LED0
-    _delay_ms(DELAYTIME);      // Wait
+    _delay_ms(DELAY_TIME);     // Wait
     // handleButton(); // Comment initINT0() call above and uncomment this line for pooling-style multitasking (a bad one too - because of _delay_ms call)
   }
 
