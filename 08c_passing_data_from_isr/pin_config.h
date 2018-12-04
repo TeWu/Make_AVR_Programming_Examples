@@ -3,9 +3,10 @@
 
 #include <avr/io.h>
 
-#define LED_DDR  DDRB
-#define LED_PORT PORTB
-#define LED      PB0
+#define LEDS_DDR  DDRB
+#define LEDS_PORT PORTB
+#define LED0      PB0
+#define LED1      PB1
 
 #define BUTTON_DDR  DDRD
 #define BUTTON_PORT PORTD
