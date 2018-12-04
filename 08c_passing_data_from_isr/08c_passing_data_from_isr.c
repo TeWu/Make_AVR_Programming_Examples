@@ -33,8 +33,10 @@ void initPCINT18(void) {
 }
 
 void delay() {
-  uint16_t time = delayTime;
-  while(time--) _delay_ms(1);
+  switch(delayTime) {
+    case DELAY_TIME_SLOW: _delay_ms(DELAY_TIME_SLOW);
+    case DELAY_TIME_FAST: _delay_ms(DELAY_TIME_FAST);
+  }
 }
 
 int main(void) {

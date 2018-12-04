@@ -15,10 +15,8 @@ static inline void playNote(uint8_t period, uint16_t duration) {
   TCNT0 = 0;      // Reset the Timer/Counter0
   OCR0A = period; // Set pitch
   SPEAKER_DDR |= (1 << SPEAKER);  // Turn on the speaker
-  while (duration) {  // Variable delay
+  while (duration--)  // Variable delay - Note: loops with _delay_xx(1) invocation may lead to inaccurate timing (?)
     _delay_ms(1);
-    duration--;
-  }
   SPEAKER_DDR &= ~(1 << SPEAKER);  // Turn the speaker off
 }
 

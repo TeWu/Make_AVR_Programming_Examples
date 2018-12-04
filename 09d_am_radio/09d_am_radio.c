@@ -51,13 +51,11 @@ ISR(TIMER1_COMPA_vect) {  // Interrupt Service Routine for audio-rate Timer 1
 }
 
 static inline void transmitBeep(uint16_t pitch, uint16_t duration) {
-  OCR1A = pitch;    // Set pitch for Timer1
-  sei();            // Enable global interrupt flag
-  do {
-    _delay_ms(1);   // Delay for pitch cycles
-    duration--;
-  } while (duration > 0);
-  cli();            // Disable global interrupt flag = Disables ISR, so that it stops toggling
+  OCR1A = pitch;      // Set pitch for Timer1
+  sei();              // Enable global interrupt flag
+  while (duration--)  // Delay for pitch cycles - Note: loops with _delay_xx(1) invocation may lead to inaccurate timing (?)
+    _delay_ms(1);
+  cli();              // Disable global interrupt flag = Disables ISR, so that it stops toggling
   ANTENNA_DDR |= (1 << ANTENNA);  // Turn on full carrier
 }
 
