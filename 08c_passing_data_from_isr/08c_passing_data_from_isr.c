@@ -5,14 +5,20 @@
 #include <avr/interrupt.h>  // "ISR" macro, and more
 #include "pin_config.h"
 
-#define DELAY_TIME_SLOW 1500
-#define DELAY_TIME_FAST 400
+#define DELAY_TIME_SLOW 600
+#define DELAY_TIME_FAST 100
 
 
-volatile uint8_t delayTime = DELAY_TIME_SLOW;  // Use global volatile variables to pass data from/to ISR
+volatile uint16_t delayTime = DELAY_TIME_SLOW;  // Use global volatile variables to pass data from/to ISR
+uint16_t isButtonPressed = 0;
 
 void setDelayTime(void) {
-  delayTime = bit_is_clear(BUTTON_PIN, BUTTON) ? DELAY_TIME_FAST : DELAY_TIME_SLOW;
+  if (bit_is_clear(BUTTON_PIN, BUTTON)) {  // Debouncing omitted for clarity
+    if(!isButtonPressed)
+      delayTime = delayTime == DELAY_TIME_SLOW  ? DELAY_TIME_FAST : DELAY_TIME_SLOW;
+    isButtonPressed = 1;
+  }
+  else isButtonPressed = 0;
 }
 
 ISR(PCINT2_vect) {  // Run every time logical state (voltage level) on button's **PORT** changes (for any pin on that port, that has PCINT enabled - in our case only pin PD2)
@@ -26,6 +32,11 @@ void initPCINT18(void) {
   PCMSK2 |= (1 << PCINT18);  // Set mask to enable PCINT18 (PCINT on pin PD2)
 }
 
+void delay() {
+  uint16_t time = delayTime;
+  while(time--) _delay_ms(1);
+}
+
 int main(void) {
   LED_DDR     |= (1 << LED);      // Configure LED pin for output
   BUTTON_DDR  &= ~(1 << BUTTON);  // Configure button pin for input
@@ -33,11 +44,9 @@ int main(void) {
   initPCINT18();
   sei();                          // Set global interrupt enable bit
 
-  uint8_t i;
   while(1) {
-    LED_PORT ^= (1 << LED);         // Toggle LED
-    for(i = 0; i < delayTime; i++)  // Wait
-      _delay_ms(1);
+    LED_PORT ^= (1 << LED);  // Toggle LED
+    delay();                 // Wait
     // setDelayTime(); // Comment initPCINT18() call above and uncomment this line for pooling-style multitasking (a bad one too - because of _delay_ms call)
   }
 
