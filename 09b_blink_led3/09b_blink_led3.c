@@ -2,9 +2,9 @@
 #include <util/delay.h>  // Functions to waste time
 #include "pin_config.h"
 
-#define DELAY_TIME          2000
-#define BLINK_DELAY_TIME    300
-#define TIMER1_TICKS_PER_MS (F_CPU / 8000)
+#define DELAY_TIME          4000
+#define BLINK_DELAY_TIME    200
+#define TIMER1_TICKS_PER_MS (F_CPU / 8000UL)
 
 
 static inline void initTimer1(void) {
@@ -22,7 +22,7 @@ int main(void) {
 
   while(1) {
     LED_DDR ^= (1 << LED);  // Toggle LED blinking by toggling LED pin between input and output mode
-    _delay_ms(DELAY_TIME);   // Wait
+    _delay_ms(DELAY_TIME);  // Wait
   }
 
   return 0;
