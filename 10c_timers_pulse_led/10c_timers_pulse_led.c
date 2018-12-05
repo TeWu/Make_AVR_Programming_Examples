@@ -25,8 +25,8 @@ ISR(TIMER1_OVF_vect) {  // Run every time Timer1 overflows = PWM cycle finishes
 
 static inline void initTimer1PWM(void) {
   // Generate PWM on pin OC1A (PB1) by setting Timer1 Compare Output Mode to Fast PWM
-  TCCR1A |= (1 << WGM10);   // Fast PWM mode, 8-bit - part1
-  TCCR1B |= (1 << WGM12);   // Fast PWM mode, 8-bit - part2
+  TCCR1A |= (1 << WGM10);   // Fast PWM mode, 8-bit  (part 1)
+  TCCR1B |= (1 << WGM12);   // Fast PWM mode, 8-bit  (part 2)
   TCCR1B |= (1 << CS10);    // Set Timer1 prescaler to 1
                             //   PWM_Freq = F_CPU/1/256
                             //            = 3906.25Hz (assuming F_CPU = 1MHz)
