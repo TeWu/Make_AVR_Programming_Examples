@@ -12,15 +12,15 @@
 #define FULL_VOLUME     31  // 5-bit volume max value
 
 // ADSR envelope values
-#define ATTACK_RATE    8	    // 0-255
-#define DECAY_RATE     120	  // 0-255
-#define SUSTAIN_LEVEL  25	    // 0-255
-#define SUSTAIN_TIME   4000   // 0-65535
-#define RELEASE_RATE   200	  // 0-65535
+#define ATTACK_RATE       10    // 0-255
+#define DECAY_RATE        120   // 0-255
+#define SUSTAIN_LEVEL     25    // 0-FULL_VOLUME
+#define SUSTAIN_DURATION  4000  // 0-65535
+#define RELEASE_RATE      600   // 0-255
 // Compute these constants
-#define ATTACK_TIME   (ATTACK_RATE * FULL_VOLUME)
-#define DECAY_TIME    (ATTACK_TIME + (FULL_VOLUME-SUSTAIN_LEVEL) * DECAY_RATE)
-#define RELEASE_TIME  (DECAY_TIME + SUSTAIN_TIME)
+#define ATTACK_TIME  (ATTACK_RATE * FULL_VOLUME)
+#define DECAY_TIME   (ATTACK_TIME + (FULL_VOLUME - SUSTAIN_LEVEL) * DECAY_RATE)
+#define RELEASE_TIME (DECAY_TIME + SUSTAIN_DURATION)
 
 
 static inline uint16_t lookupPitch(char c) {
@@ -67,23 +67,20 @@ int main(void) {
     // Dynamic volume calculations
     if (noteClock) {  // If note clock already running
       noteClock++;
-      // ATTACK
-      if (noteClock < ATTACK_TIME &&            // If in ATTACK part of the ADSR envelope, and
-          noteClock > ATTACK_RATE * volume  &&  // if time to increase volume, and
-          volume < 31)                          // if not already at max volume
-        volume++;
-      // DECAY
-      else if (noteClock < DECAY_TIME &&  // If in DECAY part of the ADSR envelope, and
-               noteClock - ATTACK_TIME > (FULL_VOLUME - volume) * DECAY_RATE  &&  // if time to decrease volume, and
-               volume > SUSTAIN_LEVEL)    // if not already at SUSTAIN volume
-        volume--;
-      // RELEASE
-      else if (noteClock > RELEASE_TIME &&  // If in RELEASE part of the ADSR envelope, and
-               noteClock - RELEASE_TIME > (SUSTAIN_LEVEL - volume) * RELEASE_RATE &&  // if time to decrease volume, and
-               volume > 0)                  // if not already at min volume
-        volume--;
-      else
-        noteClock = 0;
+      if (noteClock < ATTACK_TIME) {  // If in ATTACK part of the ADSR envelope
+        if (noteClock > ATTACK_RATE * volume && volume < FULL_VOLUME)  // if time to increase volume, and not already at max volume
+          volume++;
+      } else if (noteClock < DECAY_TIME) {  // If in DECAY part of the ADSR envelope
+        if (noteClock - ATTACK_TIME > (FULL_VOLUME - volume) * DECAY_RATE && volume > SUSTAIN_LEVEL)  // if time to decrease volume, and not already at SUSTAIN volume
+          volume--;
+      } else if (noteClock > RELEASE_TIME) {  // If in RELEASE part of the ADSR envelope
+        if (noteClock - RELEASE_TIME > (SUSTAIN_LEVEL - volume) * RELEASE_RATE) {  // if time to decrease volume
+          if (volume > 0)  // if not already at min volume
+            volume--;
+          else
+            noteClock = 0;
+        }
+      }
     }
 
     // Update mixer
@@ -95,7 +92,7 @@ int main(void) {
     // Set voltage at speaker pin
     loop_until_bit_is_set(TIFR0, TOV0);  // Wait for current PWM cycle to finish
     TIFR0 |= (1 << TOV0);                // Reset Timer0 overflow bit
-    OCR0A = 128 + ((uint8_t) mixer);     // Set PWM duty cycle = voltage for speaker pin
+    OCR0A = 128 + (uint8_t) mixer;     // Set PWM duty cycle = voltage for speaker pin
 
     // Process USART input - pooling style (using interrupts would typically be a better way - but in this example main loop is running really frequently (31.25 kHz), so the delay between a received character and playing the note is so short that a human will never know)
     if (bit_is_set(UCSR0A, RXC0)) {  // If data received over USART
