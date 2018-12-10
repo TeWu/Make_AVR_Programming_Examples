@@ -91,7 +91,8 @@ erase:
 
 clean:
 	rm -f *.elf *.hex *.obj *.o *.d *.eep *.lst \
-	      *.sym *.map $(TARGET).eeprom
+	      *.sym *.map $(TARGET).eeprom \
+				$(wildcard $(LIB_ROOTDIR)/**/*.o)
 
 serial_terminal:
 	sudo screen /dev/ttyUSB0 9600
