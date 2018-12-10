@@ -34,8 +34,10 @@ int main(void) {
     TWI_stop();
 
     // Transmit buffer's content over USART
-    for (i = 0; i < BUFFER_SIZE - 1; i++)
+    for (i = 0; i < BUFFER_SIZE - 1; i++) {
       USART_printByte(buffer[i]);
+      USART_printNewLine();
+    }
 
     // Clear buffer and wait
     memset(buffer, 0, BUFFER_SIZE);

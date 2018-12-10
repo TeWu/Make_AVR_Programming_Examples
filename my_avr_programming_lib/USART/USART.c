@@ -49,6 +49,11 @@ void USART_printString(const char myString[]) {
     USART_transmitByte(myString[i++]);
 }
 
+void USART_printNewLine(void) {
+    USART_transmitByte('\r');
+    USART_transmitByte('\n');
+}
+
 void USART_readString(char myString[], uint8_t maxLength) {
   char response;
   uint8_t i = 0;

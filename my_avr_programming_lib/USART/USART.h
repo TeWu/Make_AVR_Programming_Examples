@@ -23,6 +23,7 @@ uint8_t USART_receiveByte(void);
 
 // Utility function to transmit/receive an entire string from/to RAM
 void USART_printString(const char myString[]);
+void USART_printNewLine(void);
 void USART_readString(char myString[], uint8_t maxLength);
 
 void USART_printByte(uint8_t byte);         // Prints a byte out as its 3-digit ascii equivalent
