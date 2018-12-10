@@ -24,13 +24,19 @@ int main(void) {
   initTimer0();
 
   while (1) {
-    playNote(C2, 200);
-    playNote(E2, 300);
-    playNote(G2, 200);
-    playNote(C3, 500);
-    _delay_ms(1000);  // TODO: delay 3 times?? Why? Is it really needed?
-    _delay_ms(1000);
-    _delay_ms(1000);
+    playNote(E3, 200);
+    _delay_ms(100);
+    playNote(E3, 200);
+    _delay_ms(200);
+    playNote(E3, 200);
+    _delay_ms(200);
+    playNote(C3, 200);
+    playNote(E3, 200);
+    _delay_ms(200);
+    playNote(G3, 400);
+    _delay_ms(500);
+    playNote(G2, 400);
+    _delay_ms(2500);
   }
 
   return 0;
